@@ -323,4 +323,10 @@
     <color name="white">#FFFFFF</color>
     <!-- White -->
 
+    <!-- My Colors -->
+    <color name="green">#4AA276</color>
+    <color name="dark_grey">#212121</color>
+    <color name="light_grey">#E4E4E4</color>
+    <!-- My Colors -->
+
 </resources>
