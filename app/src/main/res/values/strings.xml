@@ -11,5 +11,7 @@
     <string name="login_failed">"Login failed"</string>
     <string name="portabledoctor">PortableDoctor</string>
     <string name="sign_up">Don\'t have an account? Sign up</string>
-    <string name="allfields">Please enter all the fields</string>
+    <string name="all_fields">Please enter all the fields</string>
+    <string name="incorrect">Incorrect email or password</string>
+    <string name="not_available">Server not available</string>
 </resources>

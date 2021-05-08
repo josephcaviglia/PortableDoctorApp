@@ -11,5 +11,7 @@
     <string name="login_failed">Accesso fallito</string>
     <string name="sign_up">Non hai un account? Iscriviti</string>
     <string name="portabledoctor">PortableDoctor</string>
-    <string name="allfields">Perfavore riempi tutti i campi</string>
+    <string name="all_fields">Perfavore riempi tutti i campi</string>
+    <string name="incorrect">Email o password errati</string>
+    <string name="not_available">Server non disponibile</string>
 </resources>
