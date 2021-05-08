@@ -24,9 +24,10 @@ public class LoginActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
         login.setOnClickListener(view -> {
-
+            //METTERE DELAY BOTTONE
             String user = username.getText().toString();
             String pass = password.getText().toString();
+            //LEVARE /login
             String url ="http://portable-doctor.herokuapp.com/utente/login?email="+user+"&password="+pass;
 
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
