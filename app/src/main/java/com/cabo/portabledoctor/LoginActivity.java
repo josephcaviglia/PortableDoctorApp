@@ -18,9 +18,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        username = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
-        login = (Button) findViewById(R.id.login);
+        username = findViewById(R.id.username);
+        password = findViewById(R.id.password);
+        login = findViewById(R.id.login);
 
         RequestQueue queue = Volley.newRequestQueue(this);
         login.setOnClickListener(view -> {
