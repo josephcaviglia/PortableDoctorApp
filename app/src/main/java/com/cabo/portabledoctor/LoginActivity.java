@@ -2,21 +2,17 @@ package com.cabo.portabledoctor;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 
 public class LoginActivity extends AppCompatActivity {
     EditText username, password;
     Button login;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,51 +22,27 @@ public class LoginActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password);
         login = (Button) findViewById(R.id.login);
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        login.setOnClickListener(view -> {
 
-                String user = username.getText().toString();
-                String pass = password.getText().toString();
+            String user = username.getText().toString();
+            String pass = password.getText().toString();
+            String url ="http://portable-doctor.herokuapp.com/utente/login?email="+user+"&password="+pass;
 
-                try {
-                    URL url = new URL("https://portable-doctor.herokuapp.com/utente");
-                    HttpURLConnection con = (HttpURLConnection)url.openConnection();
-                    con.setRequestMethod("GET");
-                    con.setRequestProperty("Content-Type", "application/json; utf-8");
-                    con.setRequestProperty("Accept", "application/json");
-                    con.setDoOutput(true);
-                    String jsonInputString = "{email: "+user+", +password: "+pass+"}";
-                    try(OutputStream os = con.getOutputStream()) {
-                        byte[] input = jsonInputString.getBytes("utf-8");
-                        os.write(input, 0, input.length);
-                    }
-                    try(BufferedReader br = new BufferedReader(
-                            new InputStreamReader(con.getInputStream(), "utf-8"))) {
-                        StringBuilder response = new StringBuilder();
-                        String responseLine = null;
-                        while ((responseLine = br.readLine()) != null) {
-                            response.append(responseLine.trim());
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                    response -> {
+                        if(user.equals("")||pass.equals(""))
+                            Toast.makeText(LoginActivity.this, "Inserisci le credenziali", Toast.LENGTH_SHORT).show();
+                        else{
+                            if(response.equals("Credenziali Errate")){
+                                Toast.makeText(LoginActivity.this, "Credenziali errate", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Intent intent  = new Intent(getApplicationContext(), HomeActivity.class);
+                                startActivity(intent);
+                            }
                         }
-                        System.out.println(response.toString());
-                    }
-                }
-                catch(Exception e){
-                    System.out.println("1");
-                }
-
-                if(user.equals("")||pass.equals(""))
-                    Toast.makeText(LoginActivity.this, "Deficente", Toast.LENGTH_SHORT).show();
-                else{
-                    if(user.equals("joseph") && pass.equals("123")){
-                        Toast.makeText(LoginActivity.this, "Sign in successfull", Toast.LENGTH_SHORT).show();
-                        //Intent intent  = new Intent(getApplicationContext(), HomeActivity.class);
-                        //startActivity(intent);
-                    }else{
-                        Toast.makeText(LoginActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
+                    }, error -> System.out.println("That didn't work!"));
+            queue.add(stringRequest);
         });
     }
 }
