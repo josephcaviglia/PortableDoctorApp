@@ -1,6 +1,7 @@
 package com.cabo.portabledoctor;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,29 +25,33 @@ public class LoginActivity extends AppCompatActivity {
         error = findViewById(R.id.error);
 
         RequestQueue queue = Volley.newRequestQueue(this);
+        //METTERE DELAY BOTTONE
         login.setOnClickListener(view -> {
-            //METTERE DELAY BOTTONE
-                String user = username.getText().toString();
-                String pass = password.getText().toString();
-
-                String url ="http://portable-doctor.herokuapp.com/utente?email="+user+"&password="+pass;
-
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                        response -> {
-                            if(user.equals("")||pass.equals(""))
-                                //Toast.makeText(LoginActivity.this, "Inserisci le credenziali", Toast.LENGTH_SHORT).show();
-                                error.setText(getResources().getString(R.string.all_fields));
-                            else{
-                                if(response.equals("Credenziali Errate")){
-                                    //Toast.makeText(LoginActivity.this, "Credenziali errate", Toast.LENGTH_SHORT).show();
-                                    error.setText(getResources().getString(R.string.incorrect));
-                                }else{
-                                    Intent intent  = new Intent(getApplicationContext(), HomeActivity.class);
-                                    startActivity(intent);
-                                }
+            String user = username.getText().toString();
+            String pass = password.getText().toString();
+            String url ="http://portable-doctor.herokuapp.com/utente?email="+user+"&password="+pass;
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
+                if(user.equals("")||pass.equals(""))
+                    error.setText(getResources().getString(R.string.all_fields));
+                        else{
+                            if(response.equals("Credenziali Errate")){
+                                error.setText(getResources().getString(R.string.incorrect));
+                            }else{
+                                SharedPreferences preferences = getSharedPreferences("keepLogged", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = preferences.edit();
+                                editor.putString("remember", "true");
+                                editor.apply();
+                                Intent intent  = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
                             }
-                        }, err -> error.setText(getResources().getString(R.string.not_available)));
-                queue.add(stringRequest);
+                        }
+                    }, err -> error.setText(getResources().getString(R.string.not_available)));
+            queue.add(stringRequest);
         });
+    }
+
+        @Override
+        public void onBackPressed() {
+            moveTaskToBack(true);
     }
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Portable Doctor</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Accedi o registrati</string>
@@ -10,7 +9,6 @@
     <string name="invalid_password">La password deve essere maggiore di 5 caratteri</string>
     <string name="login_failed">Accesso fallito</string>
     <string name="sign_up">Non hai un account? Iscriviti</string>
-    <string name="portabledoctor">PortableDoctor</string>
     <string name="all_fields">Perfavore riempi tutti i campi</string>
     <string name="incorrect">Email o password errati</string>
     <string name="not_available">Server non disponibile</string>
