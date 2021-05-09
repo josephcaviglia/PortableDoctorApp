@@ -27,11 +27,11 @@ public class LoginActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         //METTERE DELAY BOTTONE
         login.setOnClickListener(view -> {
-            String user = username.getText().toString();
+            String email = username.getText().toString();
             String pass = password.getText().toString();
-            String url ="http://portable-doctor.herokuapp.com/utente?email="+user+"&password="+pass;
+            String url ="http://portable-doctor.herokuapp.com/utente?email="+email+"&password="+pass;
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
-                if(user.equals("")||pass.equals(""))
+                if(email.equals("")||pass.equals(""))
                     error.setText(getResources().getString(R.string.all_fields));
                         else{
                             if(response.equals("Credenziali Errate")){
@@ -40,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
                                 SharedPreferences preferences = getSharedPreferences("keepLogged", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = preferences.edit();
                                 editor.putString("remember", "true");
+                                editor.putString("email", email);
+                                editor.putString("password", pass);
                                 editor.apply();
                                 Intent intent  = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
