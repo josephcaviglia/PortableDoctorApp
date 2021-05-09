@@ -5,14 +5,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     Button logout;
@@ -39,10 +38,14 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url ="http://portable-doctor.herokuapp.com/utente?email="+email+"&password="+pass;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
-            Gson g = new Gson();
-            User user = g.fromJson(response, User.class);
-            String sName = user.getNome()+" "+user.getCognome();
-            name.setText(sName);
+            JSONObject obj = null;
+            try {
+                obj = new JSONObject(response);
+                String sName =  obj.getString("nome")+" "+ obj.getString("cognome");
+                name.setText(sName);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }, err -> welcome.setText(getResources().getString(R.string.not_available)));
         queue.add(stringRequest);
 

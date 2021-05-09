@@ -3,11 +3,9 @@ package com.cabo.portabledoctor;
 public class User {
     private String nome, cognome, email, password;
 
-    public User(String nome, String surname, String email, String password) {
+    public User(String nome, String surname) {
         this.nome = nome;
         this.cognome = surname;
-        this.email = email;
-        this.password = password;
     }
 
     public String getNome() {
