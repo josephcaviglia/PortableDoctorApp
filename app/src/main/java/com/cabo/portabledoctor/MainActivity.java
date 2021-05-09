@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         name = findViewById(R.id.name);
         logout = findViewById(R.id.logout);
 
-        if(check.equals("false")) {
+        if(!check.equals("true")) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         }
