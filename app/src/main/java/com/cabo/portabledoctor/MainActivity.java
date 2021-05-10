@@ -23,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences preferences = getSharedPreferences("keepLogged", MODE_PRIVATE);
         String check = preferences.getString("remember", "");
-        //String email = preferences.getString("email", "");
-        //String pass = preferences.getString("password", "");
         String token = preferences.getString("token", "");
 
         welcome = findViewById(R.id.welcome);
@@ -39,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url ="http://portable-doctor.herokuapp.com/utente?token="+token;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
-            JSONObject obj = null;
+            JSONObject obj;
             try {
                 obj = new JSONObject(response);
                 String sName =  obj.getString("nome")+" "+ obj.getString("cognome");
