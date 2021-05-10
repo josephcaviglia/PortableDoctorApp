@@ -18,5 +18,6 @@
     <string name="yes">Sì</string>
     <string name="no">No</string>
     <string name="pathologies">Patologie cardiovascolari?</string>
-    <string name="success">Registrazione avvenuto con successo</string>
+    <string name="success">Registrazione avvenuta con successo</string>
+    <string name="already">Email già registrata</string>
 </resources>

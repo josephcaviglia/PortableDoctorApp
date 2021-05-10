@@ -37,6 +37,13 @@ public class LoginActivity extends AppCompatActivity {
 
         setClickableString(part, register, account);
 
+        String success = getIntent().getStringExtra("SUCCESS");
+
+        if(getResources().getString(R.string.success).equals(success)) {
+            error.setTextColor(getColor(R.color.green));
+            error.setText(success);
+        }
+
         RequestQueue queue = Volley.newRequestQueue(this);
         //METTERE DELAY BOTTONE
         login.setOnClickListener(view -> {
@@ -44,10 +51,13 @@ public class LoginActivity extends AppCompatActivity {
             String pass = password.getText().toString();
             String url ="http://portable-doctor.herokuapp.com/utente/login?email="+email+"&password="+pass;
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
-                if("".equals(email)||"".equals(pass))
+                if("".equals(email)||"".equals(pass)) {
+                    error.setTextColor(getColor(R.color.red_500));
                     error.setText(getResources().getString(R.string.all_fields));
+                }
                         else{
                             if(response.equals("Credenziali Errate")){
+                                error.setTextColor(getColor(R.color.red_500));
                                 error.setText(getResources().getString(R.string.incorrect));
                             }else{
                                 JSONObject obj;
@@ -67,7 +77,11 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         }
-                    }, err -> error.setText(getResources().getString(R.string.not_available)));
+                    },
+                        err -> {
+                            error.setTextColor(getColor(R.color.red_500));
+                            error.setText(getResources().getString(R.string.not_available));
+                        });
             queue.add(stringRequest);
         });
     }

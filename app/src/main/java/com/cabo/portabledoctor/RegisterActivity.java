@@ -2,21 +2,14 @@ package com.cabo.portabledoctor;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RegisterActivity  extends AppCompatActivity {
     Button signup;
@@ -44,7 +37,13 @@ public class RegisterActivity  extends AppCompatActivity {
             else {
                 String url = "http://portable-doctor.herokuapp.com/utente?nome="+name2+"&cognome="+surname2+"&email="+email2+"&password="+password2;
                 StringRequest postRequest = new StringRequest(Request.Method.POST, url, response -> {
-                    error.setText(getResources().getString(R.string.success));
+                    if(response.equals("Errore"))
+                        error.setText(getResources().getString(R.string.already));
+                    else{
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.putExtra("SUCCESS", getResources().getString(R.string.success));
+                        startActivity(intent);
+                    }
                 }, err -> error.setText(getResources().getString(R.string.not_available)));
                 queue.add(postRequest);
             }
