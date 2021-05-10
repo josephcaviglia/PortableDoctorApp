@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+    android:id="@+id/container1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
@@ -56,8 +56,7 @@
         app:layout_constraintBottom_toTopOf="@+id/error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username"
-        tools:ignore="RtlSymmetry" />
+        app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <Button
         android:id="@+id/login"
@@ -91,7 +90,6 @@
         android:fontFamily="@font/poppins_bold"
         android:text="@string/app_name"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/green"
         android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/username"
@@ -109,7 +107,7 @@
         android:layout_marginEnd="64dp"
         android:layout_marginBottom="100dp"
         android:fontFamily="@font/poppins"
-        android:text="@string/sign_up"
+        android:text="@string/sign_up2"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

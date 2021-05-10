@@ -328,5 +328,6 @@
     <color name="dark_grey">#212121</color>
     <color name="light_grey">#E4E4E4</color>
     <color name="dark_bg">#121212</color>
+    <color name="grey">#8D8D8D</color>
     <!-- My Colors -->
 </resources>

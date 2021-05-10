@@ -5,8 +5,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -37,11 +41,12 @@ public class LoginActivity extends AppCompatActivity {
                             if(response.equals("Credenziali Errate")){
                                 error.setText(getResources().getString(R.string.incorrect));
                             }else{
+
                                 SharedPreferences preferences = getSharedPreferences("keepLogged", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = preferences.edit();
                                 editor.putString("remember", "true");
-                                editor.putString("email", email);
-                                editor.putString("password", pass);
+                                //editor.putString("email", email);
+                                //editor.putString("password", pass);
                                 editor.apply();
                                 Intent intent  = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
@@ -52,8 +57,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-        @Override
-        public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
             moveTaskToBack(true);
     }
+
+
 }
