@@ -37,15 +37,14 @@ public class LoginActivity extends AppCompatActivity {
 
         setClickableString(part, register, account);
 
-
         RequestQueue queue = Volley.newRequestQueue(this);
         //METTERE DELAY BOTTONE
         login.setOnClickListener(view -> {
             String email = username.getText().toString();
             String pass = password.getText().toString();
-            String url ="http://portable-doctor.herokuapp.com/utente?email="+email+"&password="+pass;
+            String url ="http://portable-doctor.herokuapp.com/utente/login?email="+email+"&password="+pass;
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
-                if(email.equals("")||pass.equals(""))
+                if("".equals(email)||"".equals(pass))
                     error.setText(getResources().getString(R.string.all_fields));
                         else{
                             if(response.equals("Credenziali Errate")){

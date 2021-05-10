@@ -18,4 +18,5 @@
     <string name="yes">Sì</string>
     <string name="no">No</string>
     <string name="pathologies">Patologie cardiovascolari?</string>
+    <string name="success">Registrazione avvenuto con successo</string>
 </resources>
