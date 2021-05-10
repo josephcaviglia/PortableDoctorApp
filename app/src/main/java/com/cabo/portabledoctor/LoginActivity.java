@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
-                ds.setUnderlineText(false); // <-- this will remove automatic underline in set span
+                ds.setUnderlineText(false);
             }
 
             @Override
@@ -97,6 +97,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         }, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         yourTextView.setText(spannableString);
-        yourTextView.setMovementMethod(LinkMovementMethod.getInstance()); // <-- important, onClick in ClickableSpan won't work without this
+        yourTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
