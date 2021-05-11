@@ -20,4 +20,8 @@
     <string name="pathologies">Patologie cardiovascolari?</string>
     <string name="success">Registrazione avvenuta con successo</string>
     <string name="already">Email già registrata</string>
+    <string name="survey">Sondaggio</string>
+    <string name="answer">Rispondi</string>
+    <string name="range">Intervallo INR</string>
+    <string name="tests">Test consecutivi valore INR stabile</string>
 </resources>

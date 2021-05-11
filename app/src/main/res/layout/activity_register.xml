@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/title2"
+        android:id="@+id/title3"
         android:layout_width="328dp"
         android:layout_height="63dp"
         android:layout_marginStart="50dp"
@@ -47,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title2" />
+        app:layout_constraintTop_toBottomOf="@+id/title3" />
 
     <EditText
         android:id="@+id/email2"
@@ -187,8 +187,8 @@
 
     <TextView
         android:id="@+id/pathologies"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="208dp"
+        android:layout_height="22dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="50dp"

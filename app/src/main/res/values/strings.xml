@@ -19,6 +19,10 @@
     <string name="yes" >Yes</string>
     <string name="no" >No</string>
     <string name="pathologies">Cardiovascular pathologies?</string>
-    <string name="success">Success</string>
+    <string name="success">Registration successfully</string>
     <string name="already">Email already registered</string>
+    <string name="survey">Survey</string>
+    <string name="answer">Answer</string>
+    <string name="range">INR range</string>
+    <string name="tests">Consecutive tests stable INR</string>
 </resources>
