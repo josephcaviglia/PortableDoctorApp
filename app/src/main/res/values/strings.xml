@@ -25,4 +25,10 @@
     <string name="answer">Answer</string>
     <string name="range">INR range</string>
     <string name="tests">Consecutive tests stable INR</string>
+    <string name="test">INR test</string>
+    <string name="result">INR test result</string>
+    <string name="date">Date</string>
+    <string name="insert">Insert</string>
+    <string name="error">Error</string>
+    <string name="drug">Drug</string>
 </resources>

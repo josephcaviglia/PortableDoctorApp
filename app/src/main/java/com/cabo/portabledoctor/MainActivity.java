@@ -10,12 +10,16 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     Button logout;
     TextView name, welcome;
+    FloatingActionButton test;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("keepLogged", MODE_PRIVATE);
         String check = preferences.getString("remember", "");
         String token = preferences.getString("token", "");
-
+        test = findViewById(R.id.testINR);
         welcome = findViewById(R.id.welcome);
         name = findViewById(R.id.name);
         logout = findViewById(R.id.logout);
@@ -34,21 +38,32 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        test.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), TestActivity.class);
+            startActivity(intent);
+        });
+
         RequestQueue queue = Volley.newRequestQueue(this);
         String url ="http://portable-doctor.herokuapp.com/utente?token="+token;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
             JSONObject obj;
             try {
                 obj = new JSONObject(response);
-                String sName =  obj.getString("nome")+" "+ obj.getString("cognome");
-                name.setText(sName);
+                name.setText(obj.getString("nome"));
+                boolean p = obj.getBoolean("pazienteWarfarin");
+                try {
+                    String warfarin = obj.getString("warfarin");
+                } catch (JSONException e) {
+                    if(check.equals("true") && p) {
+                        Intent intent = new Intent(getApplicationContext(), SurveyActivity.class);
+                        startActivity(intent);
+                    }
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }, err -> welcome.setText(getResources().getString(R.string.not_available)));
         queue.add(stringRequest);
-
-
 
         logout.setOnClickListener(view -> {
             SharedPreferences preferences1 = getSharedPreferences("keepLogged", MODE_PRIVATE);

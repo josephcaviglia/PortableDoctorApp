@@ -24,4 +24,10 @@
     <string name="answer">Rispondi</string>
     <string name="range">Intervallo INR</string>
     <string name="tests">Test consecutivi valore INR stabile</string>
+    <string name="test">Test INR</string>
+    <string name="result">Risultato test INR</string>
+    <string name="date">Data</string>
+    <string name="insert">Inserisci</string>
+    <string name="error">Errore</string>
+    <string name="drug">Farmaco</string>
 </resources>

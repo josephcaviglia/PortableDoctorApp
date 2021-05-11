@@ -9,14 +9,15 @@
 
     <TextView
         android:id="@+id/welcome"
-        android:layout_width="212dp"
-        android:layout_height="32dp"
+        android:layout_width="252dp"
+        android:layout_height="61dp"
         android:layout_marginStart="99dp"
-        android:layout_marginTop="137dp"
+        android:layout_marginTop="108dp"
         android:layout_marginEnd="100dp"
         android:text="@string/welcome"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textColor="@color/green"
+        android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,9 +27,8 @@
         android:layout_width="196dp"
         android:layout_height="89dp"
         android:layout_gravity="start"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="180dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="48dp"
         android:backgroundTint="@color/green"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/logout"
@@ -36,24 +36,56 @@
         android:textSize="22sp"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="308dp"
-        android:layout_height="36dp"
+        android:layout_width="316dp"
+        android:layout_height="78dp"
         android:layout_marginStart="54dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="49dp"
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="@font/poppins_bold"
         android:textAlignment="center"
         android:textColor="@color/green"
-        android:textSize="20sp"
+        android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcome" />
 
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="50dp"
+        app:fab_expandDirection="up"
+        app:fab_labelsPosition="left"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:fab_addButtonColorNormal="@color/green"
+        app:fab_addButtonColorPressed="@color/green"
+        app:fab_labelStyle="@style/LabelStyle">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/testINR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/green"
+            app:fab_colorPressed="@color/green"
+            android:src="@drawable/ic_vial_solid"
+            app:fab_size="mini"
+            app:fab_title="@string/test" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/drug"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/green"
+            app:fab_colorPressed="@color/green"
+            android:src="@drawable/ic_pills_solid"
+            app:fab_size="mini"
+            app:fab_title="@string/drug" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

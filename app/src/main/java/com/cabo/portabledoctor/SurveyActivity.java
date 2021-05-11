@@ -18,7 +18,7 @@ import com.android.volley.toolbox.Volley;
 public class SurveyActivity extends AppCompatActivity {
     Button answer;
     EditText tests;
-    RadioButton range1;
+    RadioButton range;
     TextView error;
 
     @Override
@@ -27,7 +27,7 @@ public class SurveyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_survey);
         answer = findViewById(R.id.answer);
         tests = findViewById(R.id.tests);
-        range1 = findViewById(R.id.radio1);
+        range = findViewById(R.id.radio1);
         error = findViewById(R.id.error3);
 
         SharedPreferences preferences = getSharedPreferences("keepLogged", MODE_PRIVATE);
@@ -40,13 +40,19 @@ public class SurveyActivity extends AppCompatActivity {
             if("".equals(tests2))
                 error.setText(getResources().getString(R.string.all_fields));
             else {
-                boolean check = false;
-                if(range1.isChecked())
-                    check = true;
-                String url = "http://portable-doctor.herokuapp.com/utente?token="+token;
+                double min, max;
+                if(range.isChecked()) {
+                    min = 1.5;
+                    max = 2;
+                }
+                else {
+                    min = 2;
+                    max = 3;
+                }
+                String url = "http://portable-doctor.herokuapp.com/utente?token="+token+"&valMin="+min+"&valMax="+max+"&num="+tests2;
                 StringRequest postRequest = new StringRequest(Request.Method.POST, url, response -> {
                     if(response.equals("Errore"))
-                        error.setText(getResources().getString(R.string.already));
+                        error.setText(getResources().getString(R.string.error));
                     else{
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
