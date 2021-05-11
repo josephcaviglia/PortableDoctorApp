@@ -23,7 +23,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/error3" />
 
     <EditText
         android:id="@+id/tests"
@@ -128,14 +129,15 @@
         android:layout_width="253dp"
         android:layout_height="23dp"
         android:layout_marginStart="90dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="90dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="20dp"
         android:fontFamily="@font/poppins_bold"
         android:textAlignment="center"
         android:textColor="#F44336"
+        app:layout_constraintBottom_toTopOf="@+id/answer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/tests" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
