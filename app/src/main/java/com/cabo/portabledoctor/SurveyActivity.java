@@ -54,8 +54,9 @@ public class SurveyActivity extends AppCompatActivity {
                     if(response.equals("Errore"))
                         error.setText(getResources().getString(R.string.error));
                     else{
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                        finish();
+                        //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        //startActivity(intent);
                     }
                 }, err -> error.setText(getResources().getString(R.string.not_available)));
                 queue.add(postRequest);

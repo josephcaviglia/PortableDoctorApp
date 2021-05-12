@@ -3,6 +3,9 @@ package com.cabo.portabledoctor;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,33 +13,45 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.getbase.floatingactionbutton.FloatingActionButton;
-
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     Button logout;
     TextView name, welcome;
-    FloatingActionButton test;
+    FloatingActionButton add;
+    ExtendedFloatingActionButton test, med;
+    Animation rotateOpen, rotateClose, fromBottom, toBottom;
+    boolean clicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);
+        rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim);
+        fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim);
+        toBottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim);
+
         SharedPreferences preferences = getSharedPreferences("keepLogged", MODE_PRIVATE);
         String check = preferences.getString("remember", "");
         String token = preferences.getString("token", "");
-        test = findViewById(R.id.testINR);
+        add = findViewById(R.id.add_btn);
+        test = findViewById(R.id.test_btn);
+        med = findViewById(R.id.med_btn);
         welcome = findViewById(R.id.welcome);
         name = findViewById(R.id.name);
         logout = findViewById(R.id.logout);
 
-        if(!check.equals("true")) {
+        if (!check.equals("true")) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         }
+
+        add.setOnClickListener(view -> onAddButtonClicked());
 
         test.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), TestActivity.class);
@@ -44,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://portable-doctor.herokuapp.com/utente?token="+token;
+        String url = "http://portable-doctor.herokuapp.com/utente?token=" + token;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
             JSONObject obj;
             try {
@@ -54,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     String warfarin = obj.getString("warfarin");
                 } catch (JSONException e) {
-                    if(check.equals("true") && p) {
+                    if (check.equals("true") && p) {
                         Intent intent = new Intent(getApplicationContext(), SurveyActivity.class);
                         startActivity(intent);
                     }
@@ -78,5 +93,33 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
+    }
+
+    private void onAddButtonClicked() {
+        setVisibility(clicked);
+        setAnimation(clicked);
+        clicked = !clicked;
+    }
+
+    private void setVisibility(boolean clicked) {
+        if (!clicked) {
+            test.setVisibility(View.VISIBLE);
+            med.setVisibility(View.VISIBLE);
+        } else {
+            test.setVisibility(View.INVISIBLE);
+            med.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setAnimation(boolean clicked) {
+        if (!clicked) {
+            test.startAnimation(fromBottom);
+            med.startAnimation(fromBottom);
+            add.startAnimation(rotateOpen);
+        } else {
+            test.startAnimation(toBottom);
+            med.startAnimation(toBottom);
+            add.startAnimation(rotateClose);
+        }
     }
 }

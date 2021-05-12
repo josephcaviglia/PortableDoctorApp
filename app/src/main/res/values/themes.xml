@@ -14,10 +14,4 @@
         <!-- Customize your theme here. -->
         <item name="android:windowLightStatusBar">true</item>
     </style>
-
-    <style name="LabelStyle">
-        <item name="android:textColor">@color/dark_grey</item>
-        <item name="fontFamily">@font/poppins</item>
-    </style>
-
 </resources>

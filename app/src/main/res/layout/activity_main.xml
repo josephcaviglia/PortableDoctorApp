@@ -27,7 +27,7 @@
         android:layout_width="196dp"
         android:layout_height="89dp"
         android:layout_gravity="start"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="20dp"
         android:layout_marginBottom="48dp"
         android:backgroundTint="@color/green"
         android:fontFamily="@font/poppins_medium"
@@ -53,39 +53,49 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcome" />
 
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="50dp"
-        app:fab_expandDirection="up"
-        app:fab_labelsPosition="left"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="60dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:tint="?colorOnSecondary"
+        android:backgroundTint="?colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:fab_addButtonColorNormal="@color/green"
-        app:fab_addButtonColorPressed="@color/green"
-        app:fab_labelStyle="@style/LabelStyle">
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/testINR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/green"
-            app:fab_colorPressed="@color/green"
-            android:src="@drawable/ic_vial_solid"
-            app:fab_size="mini"
-            app:fab_title="@string/test" />
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/med_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/drug"
+        android:fontFamily="@font/poppins"
+        android:textColor="?colorOnSecondary"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/add_btn"
+        app:layout_constraintEnd_toEndOf="@+id/add_btn"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"/>
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/drug"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/green"
-            app:fab_colorPressed="@color/green"
-            android:src="@drawable/ic_pills_solid"
-            app:fab_size="mini"
-            app:fab_title="@string/drug" />
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/test_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/test"
+        android:fontFamily="@font/poppins"
+        android:textColor="?colorOnSecondary"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/med_btn"
+        app:layout_constraintEnd_toEndOf="@+id/med_btn"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"/>
 
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
