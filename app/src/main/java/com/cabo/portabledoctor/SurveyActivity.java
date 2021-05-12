@@ -49,8 +49,8 @@ public class SurveyActivity extends AppCompatActivity {
                     min = 2;
                     max = 3;
                 }
-                String url = "http://portable-doctor.herokuapp.com/utente?token="+token+"&valMin="+min+"&valMax="+max+"&num="+tests2;
-                StringRequest postRequest = new StringRequest(Request.Method.POST, url, response -> {
+                String url = "http://portable-doctor.herokuapp.com/utente?token="+token+"&valMin="+min+"&valMax="+max+"&f="+tests2;
+                StringRequest postRequest = new StringRequest(Request.Method.PATCH, url, response -> {
                     if(response.equals("Errore"))
                         error.setText(getResources().getString(R.string.error));
                     else{

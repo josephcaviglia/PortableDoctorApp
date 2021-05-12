@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     ExtendedFloatingActionButton test, med;
     Animation rotateOpen, rotateClose, fromBottom, toBottom;
     boolean clicked = false;
-
+    boolean patient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,15 +65,14 @@ public class MainActivity extends AppCompatActivity {
             try {
                 obj = new JSONObject(response);
                 name.setText(obj.getString("nome"));
-                boolean p = obj.getBoolean("pazienteWarfarin");
-                try {
-                    String warfarin = obj.getString("warfarin");
-                } catch (JSONException e) {
-                    if (check.equals("true") && p) {
+                patient = obj.getBoolean("pazienteWarfarin");
+                JSONObject obj2 = obj.getJSONObject("warfarin");
+                double warfarin = obj2.getDouble("valoreMax");
+                    if (check.equals("true") && patient && warfarin==-1) {
                         Intent intent = new Intent(getApplicationContext(), SurveyActivity.class);
                         startActivity(intent);
                     }
-                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -103,7 +102,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setVisibility(boolean clicked) {
         if (!clicked) {
-            test.setVisibility(View.VISIBLE);
+            if(patient)
+                test.setVisibility(View.VISIBLE);
+            else
+                test.setVisibility(View.INVISIBLE);
             med.setVisibility(View.VISIBLE);
         } else {
             test.setVisibility(View.INVISIBLE);
@@ -113,11 +115,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void setAnimation(boolean clicked) {
         if (!clicked) {
-            test.startAnimation(fromBottom);
+            if(patient)
+                test.startAnimation(fromBottom);
             med.startAnimation(fromBottom);
             add.startAnimation(rotateOpen);
         } else {
-            test.startAnimation(toBottom);
+            if(patient)
+                test.startAnimation(toBottom);
             med.startAnimation(toBottom);
             add.startAnimation(rotateClose);
         }

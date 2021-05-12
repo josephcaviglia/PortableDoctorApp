@@ -8,6 +8,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 public class MyEditTextDatePicker implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
@@ -49,5 +50,9 @@ public class MyEditTextDatePicker implements View.OnClickListener, DatePickerDia
         _editText.setText(new StringBuilder()
                 // Month is 0 based so add 1
                 .append(_day).append("/").append(_month + 1).append("/").append(_birthYear).append(" "));
+    }
+
+    public String getDate() {
+        return new StringBuilder().append(_day).append("/").append(_month + 1).append("/").append(_birthYear).toString();
     }
 }
