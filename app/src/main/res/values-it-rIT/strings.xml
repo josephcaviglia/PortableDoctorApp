@@ -30,4 +30,5 @@
     <string name="insert">Inserisci</string>
     <string name="error">Errore</string>
     <string name="drug">Farmaco</string>
+    <string name="new_drug">Nuovo farmaco</string>
 </resources>

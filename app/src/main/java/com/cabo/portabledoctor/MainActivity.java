@@ -60,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        med.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), NewDrugActivity.class);
+            startActivity(intent);
+        });
+
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://portable-doctor.herokuapp.com/utente?token=" + token;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
