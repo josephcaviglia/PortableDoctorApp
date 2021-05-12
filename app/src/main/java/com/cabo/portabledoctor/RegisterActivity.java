@@ -17,10 +17,12 @@ public class RegisterActivity  extends AppCompatActivity {
     EditText email, password, name, surname;
     TextView error;
     RadioButton yes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
         signup = findViewById(R.id.signup);
         name = findViewById(R.id.name2);
         surname = findViewById(R.id.surname2);
@@ -30,11 +32,13 @@ public class RegisterActivity  extends AppCompatActivity {
         yes = findViewById(R.id.radioYes);
 
         RequestQueue queue = Volley.newRequestQueue(this);
+
         signup.setOnClickListener(view -> {
             String name2 = name.getText().toString();
             String surname2 = surname.getText().toString();
             String email2 = email.getText().toString();
             String password2 = password.getText().toString();
+
             if("".equals(email2) || "".equals(password2) || "".equals(name2) || "".equals(surname2))
                 error.setText(getResources().getString(R.string.all_fields));
             else {

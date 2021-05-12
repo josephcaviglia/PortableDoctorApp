@@ -23,15 +23,18 @@ public class LoginActivity extends AppCompatActivity {
     EditText username, password;
     Button login;
     TextView error, account;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         login = findViewById(R.id.login);
         error = findViewById(R.id.error);
         account = findViewById(R.id.account);
+
         String register = account.getText().toString();
         String part = getResources().getString(R.string.sign_up);
 
@@ -45,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        //METTERE DELAY BOTTONE
+
         login.setOnClickListener(view -> {
             String email = username.getText().toString();
             String pass = password.getText().toString();

@@ -25,6 +25,7 @@ public class SurveyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
+
         answer = findViewById(R.id.answer);
         tests = findViewById(R.id.tests);
         range = findViewById(R.id.radio1);
@@ -53,15 +54,11 @@ public class SurveyActivity extends AppCompatActivity {
                 StringRequest postRequest = new StringRequest(Request.Method.PATCH, url, response -> {
                     if(response.equals("Errore"))
                         error.setText(getResources().getString(R.string.error));
-                    else{
+                    else
                         finish();
-                        //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        //startActivity(intent);
-                    }
                 }, err -> error.setText(getResources().getString(R.string.not_available)));
                 queue.add(postRequest);
             }
         });
-
     }
 }

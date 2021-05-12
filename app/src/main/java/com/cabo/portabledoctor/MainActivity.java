@@ -26,10 +26,18 @@ public class MainActivity extends AppCompatActivity {
     Animation rotateOpen, rotateClose, fromBottom, toBottom;
     boolean clicked = false;
     boolean patient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        add = findViewById(R.id.add_btn);
+        test = findViewById(R.id.test_btn);
+        med = findViewById(R.id.med_btn);
+        welcome = findViewById(R.id.welcome);
+        name = findViewById(R.id.name);
+        logout = findViewById(R.id.logout);
 
         rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);
         rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim);
@@ -39,12 +47,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("keepLogged", MODE_PRIVATE);
         String check = preferences.getString("remember", "");
         String token = preferences.getString("token", "");
-        add = findViewById(R.id.add_btn);
-        test = findViewById(R.id.test_btn);
-        med = findViewById(R.id.med_btn);
-        welcome = findViewById(R.id.welcome);
-        name = findViewById(R.id.name);
-        logout = findViewById(R.id.logout);
 
         if (!check.equals("true")) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }, err -> welcome.setText(getResources().getString(R.string.not_available)));
+
         queue.add(stringRequest);
 
         logout.setOnClickListener(view -> {
