@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.Request;
@@ -15,8 +17,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     Button logout;
@@ -26,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     Animation rotateOpen, rotateClose, fromBottom, toBottom;
     boolean clicked = false;
     boolean patient;
+    ListView list;
+    ArrayAdapter<String> adapter;
+    ArrayList<String> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
         welcome = findViewById(R.id.welcome);
         name = findViewById(R.id.name);
         logout = findViewById(R.id.logout);
+        list = (ListView) findViewById(R.id.listView);
+
+        arrayList = new ArrayList<String>();
+        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, arrayList);
+        list.setAdapter(adapter);
 
         rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);
         rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim);
@@ -86,6 +98,31 @@ public class MainActivity extends AppCompatActivity {
         }, err -> welcome.setText(getResources().getString(R.string.not_available)));
 
         queue.add(stringRequest);
+
+        String url2 = "http://portable-doctor.herokuapp.com/evento/personale?token=" + token;
+        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2, response -> {
+            //JSONParser parser = new JSONParser();
+            JSONObject obj;
+            try {
+
+                obj = new JSONObject(response);
+                //JSONArray jlist = (JSONArray) obj;
+                String data = obj.getString("data");
+                JSONObject obj2 = obj.getJSONObject("descrizione");
+                String medicinale = obj2.getString("medicinale");
+                double dosaggio = obj2.getDouble("dosaggio");
+
+                for(int i = 0; i < 10; i++) {
+                    arrayList.add("");
+                    adapter.notifyDataSetChanged();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, err -> welcome.setText(getResources().getString(R.string.not_available)));
+
+        queue.add(stringRequest2);
 
         logout.setOnClickListener(view -> {
             SharedPreferences preferences1 = getSharedPreferences("keepLogged", MODE_PRIVATE);

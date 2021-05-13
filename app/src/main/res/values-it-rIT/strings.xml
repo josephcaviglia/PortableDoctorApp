@@ -31,4 +31,8 @@
     <string name="error">Errore</string>
     <string name="drug">Farmaco</string>
     <string name="new_drug">Nuovo farmaco</string>
+    <string name="dose">Dose</string>
+    <string name="endDate">Data termine cura</string>
+    <string name="hour">Ora assunzione</string>
+    <string name="out_of_bounds">Fuori intervallo</string>
 </resources>

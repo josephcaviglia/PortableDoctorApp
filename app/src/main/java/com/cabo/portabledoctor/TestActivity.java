@@ -2,6 +2,7 @@ package com.cabo.portabledoctor;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,8 +24,7 @@ import java.util.Locale;
 
 public class TestActivity extends AppCompatActivity {
     Button insert;
-    TextView error;
-    String date;
+    TextView error, date;
     EditText result;
 
     @Override
@@ -34,19 +34,26 @@ public class TestActivity extends AppCompatActivity {
         MyEditTextDatePicker da = new MyEditTextDatePicker(this, R.id.date);
         insert = findViewById(R.id.insert);
         error = findViewById(R.id.error4);
-        date= da.getDate();
+        date= findViewById(R.id.date);
         result = findViewById(R.id.result);
+
+
+        SharedPreferences preferences = getSharedPreferences("keepLogged", MODE_PRIVATE);
+        String token = preferences.getString("token", "");
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
         insert.setOnClickListener(view -> {
-            if("".equals(date) || "".equals(result))
+            String result2 = result.getText().toString();
+            String date2 = date.getText().toString();
+
+            if("".equals(date2) || "".equals(result2))
                 error.setText(getResources().getString(R.string.all_fields));
             else {
-                String url = "http://portable-doctor.herokuapp.com/test?";
+                String url = "http://portable-doctor.herokuapp.com/test?token="+token+"&valore="+result2+"&medicinale=anticoagulante&data="+date2;
                 StringRequest postRequest = new StringRequest(Request.Method.POST, url, response -> {
-                    if(response.equals("Errore"))
-                        error.setText(getResources().getString(R.string.already));
+                    if(response.equals("Fuori intervallo"))
+                        error.setText(getResources().getString(R.string.out_of_bounds));
                     else
                         finish();
                 }, err -> error.setText(getResources().getString(R.string.not_available)));

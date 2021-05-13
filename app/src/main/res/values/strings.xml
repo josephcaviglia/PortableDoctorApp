@@ -4,7 +4,7 @@
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
+    <string name="welcome">Welcome</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="sign_up2">Don\'t have an account? Sign up</string>
@@ -32,4 +32,8 @@
     <string name="error">Error</string>
     <string name="drug">Drug</string>
     <string name="new_drug">New drug</string>
+    <string name="dose">Dose</string>
+    <string name="hour">Time to take medicine</string>
+    <string name="endDate">End of therapy</string>
+    <string name="out_of_bounds" >Out of bounds</string>
 </resources>
