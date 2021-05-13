@@ -61,10 +61,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="35dp"
         android:layout_marginBottom="60dp"
+        android:backgroundTint="?colorPrimary"
         android:clickable="true"
         android:focusable="true"
         android:tint="?colorOnSecondary"
-        android:backgroundTint="?colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_add_24" />
@@ -100,9 +100,12 @@
         style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"/>
 
     <ScrollView
-        android:layout_width="413dp"
-        android:layout_height="368dp"
+        android:id="@+id/scroll"
+        android:layout_width="355dp"
+        android:layout_height="366dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/add_btn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -112,16 +115,29 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <ListView
                 android:id="@+id/listView"
                 android:layout_width="match_parent"
                 android:layout_height="365dp"
-                android:background="@drawable/et_cust"/>
+                android:background="@drawable/et_cust"
+                android:divider="@null"
+                android:textAlignment="center" />
         </LinearLayout>
     </ScrollView>
 
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="60dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/add_btn"
+        app:layout_constraintStart_toEndOf="@+id/logout"
+        app:srcCompat="@drawable/ic_sync_alt_solid" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,9 @@
 package com.cabo.portabledoctor;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,21 +15,27 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String NOTIFICATION_CHANNEL_ID = "10001";
+    private final static String default_notification_channel_id = "default";
     Button logout;
     TextView name, welcome;
-    FloatingActionButton add;
+    FloatingActionButton add, refresh;
     ExtendedFloatingActionButton test, med;
     Animation rotateOpen, rotateClose, fromBottom, toBottom;
     boolean clicked = false;
@@ -45,10 +55,11 @@ public class MainActivity extends AppCompatActivity {
         welcome = findViewById(R.id.welcome);
         name = findViewById(R.id.name);
         logout = findViewById(R.id.logout);
-        list = (ListView) findViewById(R.id.listView);
+        list = findViewById(R.id.listView);
+        refresh = findViewById(R.id.refresh);
 
         arrayList = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, arrayList);
+        adapter = new ArrayAdapter<String>(this, R.layout.row, arrayList);
         list.setAdapter(adapter);
 
         rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);
@@ -67,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
         add.setOnClickListener(view -> onAddButtonClicked());
 
+        refresh.setOnClickListener(view -> refresh(token));
+
         test.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), TestActivity.class);
             startActivity(intent);
@@ -77,52 +90,30 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        JSONParser parser = new JSONParser();
+
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://portable-doctor.herokuapp.com/utente?token=" + token;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
-            JSONObject obj;
             try {
-                obj = new JSONObject(response);
-                name.setText(obj.getString("nome"));
-                patient = obj.getBoolean("pazienteWarfarin");
-                JSONObject obj2 = obj.getJSONObject("warfarin");
-                double warfarin = obj2.getDouble("valoreMax");
+                JSONObject obj = (JSONObject) parser.parse(response);
+                name.setText((String) obj.get("nome"));
+                patient = (boolean) obj.get("pazienteWarfarin");
+                JSONObject obj2 = (JSONObject) obj.get("warfarin");
+                long warfarin = (long) obj2.get("valoreMax");
                     if (check.equals("true") && patient && warfarin==-1) {
                         Intent intent = new Intent(getApplicationContext(), SurveyActivity.class);
                         startActivity(intent);
                     }
 
-            } catch (JSONException e) {
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
         }, err -> welcome.setText(getResources().getString(R.string.not_available)));
 
         queue.add(stringRequest);
 
-        String url2 = "http://portable-doctor.herokuapp.com/evento/personale?token=" + token;
-        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2, response -> {
-            //JSONParser parser = new JSONParser();
-            JSONObject obj;
-            try {
-
-                obj = new JSONObject(response);
-                //JSONArray jlist = (JSONArray) obj;
-                String data = obj.getString("data");
-                JSONObject obj2 = obj.getJSONObject("descrizione");
-                String medicinale = obj2.getString("medicinale");
-                double dosaggio = obj2.getDouble("dosaggio");
-
-                for(int i = 0; i < 10; i++) {
-                    arrayList.add("");
-                    adapter.notifyDataSetChanged();
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }, err -> welcome.setText(getResources().getString(R.string.not_available)));
-
-        queue.add(stringRequest2);
+        refresh(token);
 
         logout.setOnClickListener(view -> {
             SharedPreferences preferences1 = getSharedPreferences("keepLogged", MODE_PRIVATE);
@@ -132,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         });
+
+
     }
 
     @Override
@@ -170,5 +163,68 @@ public class MainActivity extends AppCompatActivity {
             med.startAnimation(toBottom);
             add.startAnimation(rotateClose);
         }
+    }
+
+    private void refresh(String token) {
+
+        JSONParser parser = new JSONParser();
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url2 = "http://portable-doctor.herokuapp.com/evento/personale?token=" + token;
+        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, url2, response -> {
+            try {
+                arrayList.clear();
+                Object obj =  parser.parse(response);
+                JSONArray jsonArray = (JSONArray) obj;
+                for(int i=0; i< jsonArray.size(); i++) {
+                    JSONObject arrayJsonObject  = (JSONObject) jsonArray.get(i);
+                    String date = (String) arrayJsonObject.get("data");
+                    String tipo = (String) arrayJsonObject.get("tipo");
+                    date = date.substring(0,10);
+                    date = date+" "+"16:00";
+
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-dd-MM HH:mm");
+                    Date d = formatter.parse(date);
+                    long mills = d.getTime() - System.currentTimeMillis();
+
+                    if(tipo.equals("dose")) {
+                        JSONObject a = (JSONObject) arrayJsonObject.get("descrizione");
+                        String drug = (String) a.get("medicinale");
+                        scheduleNotification(getNotification(drug), mills);
+                        String dose = String.valueOf(a.get("dosaggio"));
+                        arrayList.add(drug+" | "+dose+" mg | "+date);
+                        adapter.notifyDataSetChanged();
+                    }
+                    else {
+                        arrayList.add("Test INR | "+date);
+                        scheduleNotification(getNotification("Test INR"), mills);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                }
+            } catch (ParseException | java.text.ParseException e) {
+                e.printStackTrace();
+            }
+        }, err -> welcome.setText(getResources().getString(R.string.not_available)));
+
+        queue.add(stringRequest2);
+    }
+
+    private void scheduleNotification (Notification notification , long delay) {
+        Intent notificationIntent = new Intent( this, MyNotificationPublisher. class ) ;
+        notificationIntent.putExtra(MyNotificationPublisher. NOTIFICATION_ID , 1 ) ;
+        notificationIntent.putExtra(MyNotificationPublisher. NOTIFICATION , notification) ;
+        PendingIntent pendingIntent = PendingIntent. getBroadcast ( this, 0 , notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT ) ;
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
+        assert alarmManager != null;
+        alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , delay , pendingIntent) ;
+    }
+    private Notification getNotification (String content) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder( this, default_notification_channel_id );
+        builder.setContentTitle("Portable Doctor");
+        builder.setContentText(content) ;
+        builder.setSmallIcon(R.drawable.ic_medicine);
+        builder.setAutoCancel(true) ;
+        builder.setChannelId(NOTIFICATION_CHANNEL_ID);
+        return builder.build() ;
     }
 }

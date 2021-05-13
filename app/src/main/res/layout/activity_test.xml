@@ -36,7 +36,7 @@
         android:drawablePadding="10dp"
         android:fontFamily="@font/poppins"
         android:hint="@string/result"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         android:selectAllOnFocus="true"

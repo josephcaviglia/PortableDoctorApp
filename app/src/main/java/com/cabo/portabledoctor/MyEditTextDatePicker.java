@@ -6,9 +6,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 
 public class MyEditTextDatePicker implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
@@ -21,7 +19,7 @@ public class MyEditTextDatePicker implements View.OnClickListener, DatePickerDia
     public MyEditTextDatePicker(Context context, int editTextViewID)
     {
         Activity act = (Activity)context;
-        this._editText = (EditText)act.findViewById(editTextViewID);
+        this._editText = act.findViewById(editTextViewID);
         this._editText.setOnClickListener(this);
         this._context = context;
     }

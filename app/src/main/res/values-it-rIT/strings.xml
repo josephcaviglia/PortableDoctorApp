@@ -17,7 +17,6 @@
     <string name="surname">Cognome</string>
     <string name="yes">Sì</string>
     <string name="no">No</string>
-    <string name="pathologies">Patologie cardiovascolari?</string>
     <string name="success">Registrazione avvenuta con successo</string>
     <string name="already">Email già registrata</string>
     <string name="survey">Sondaggio</string>
@@ -35,4 +34,6 @@
     <string name="endDate">Data termine cura</string>
     <string name="hour">Ora assunzione</string>
     <string name="out_of_bounds">Fuori intervallo</string>
+    <string name="date_error">Errore data</string>
+    <string name="pathologies">Sei in terapia Warfarin?</string>
 </resources>

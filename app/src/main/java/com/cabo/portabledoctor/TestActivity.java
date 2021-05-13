@@ -1,26 +1,16 @@
 package com.cabo.portabledoctor;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class TestActivity extends AppCompatActivity {
     Button insert;
@@ -50,12 +40,15 @@ public class TestActivity extends AppCompatActivity {
             if("".equals(date2) || "".equals(result2))
                 error.setText(getResources().getString(R.string.all_fields));
             else {
-                String url = "http://portable-doctor.herokuapp.com/test?token="+token+"&valore="+result2+"&medicinale=anticoagulante&data="+date2;
+                String url = "http://portable-doctor.herokuapp.com/test?token="+token+"&valore="+result2+"&medicinale=Warfarin&data="+date2;
                 StringRequest postRequest = new StringRequest(Request.Method.POST, url, response -> {
                     if(response.equals("Fuori intervallo"))
                         error.setText(getResources().getString(R.string.out_of_bounds));
-                    else
+                    else {
                         finish();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
                 }, err -> error.setText(getResources().getString(R.string.not_available)));
                 queue.add(postRequest);
             }

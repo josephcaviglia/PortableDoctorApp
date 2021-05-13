@@ -18,7 +18,6 @@
     <string name="surname" >Surname</string>
     <string name="yes" >Yes</string>
     <string name="no" >No</string>
-    <string name="pathologies">Cardiovascular pathologies?</string>
     <string name="success">Registration successfully</string>
     <string name="already">Email already registered</string>
     <string name="survey">Survey</string>
@@ -36,4 +35,6 @@
     <string name="hour">Time to take medicine</string>
     <string name="endDate">End of therapy</string>
     <string name="out_of_bounds" >Out of bounds</string>
+    <string name="date_error">Date error</string>
+    <string name="pathologies">Are you taking Warfarin?</string>
 </resources>
