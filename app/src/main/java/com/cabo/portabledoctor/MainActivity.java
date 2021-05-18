@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,9 +33,8 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
     public static final String NOTIFICATION_CHANNEL_ID = "10001";
     private final static String default_notification_channel_id = "default";
-    Button logout;
     TextView name, welcome;
-    FloatingActionButton add, refresh;
+    FloatingActionButton add, refresh, logout, timeSelector;
     ExtendedFloatingActionButton test, med;
     Animation rotateOpen, rotateClose, fromBottom, toBottom;
     boolean clicked = false;
@@ -44,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     ListView list;
     ArrayAdapter<String> adapter;
     ArrayList<String> arrayList;
+    String time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         logout = findViewById(R.id.logout);
         list = findViewById(R.id.listView);
         refresh = findViewById(R.id.refresh);
+        timeSelector = findViewById(R.id.time_selector);
 
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(this, R.layout.row, arrayList);
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("keepLogged", MODE_PRIVATE);
         String check = preferences.getString("remember", "");
         String token = preferences.getString("token", "");
+        time = preferences.getString("hour", "");
 
         if (!check.equals("true")) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -79,7 +80,10 @@ public class MainActivity extends AppCompatActivity {
 
         add.setOnClickListener(view -> onAddButtonClicked());
 
-        refresh.setOnClickListener(view -> refresh(token));
+        refresh.setOnClickListener(view -> {
+            refresh(token);
+            time = preferences.getString("hour", "");
+        });
 
         test.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), TestActivity.class);
@@ -88,6 +92,11 @@ public class MainActivity extends AppCompatActivity {
 
         med.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), NewDrugActivity.class);
+            startActivity(intent);
+        });
+
+        timeSelector.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), TimeActivity.class);
             startActivity(intent);
         });
 
@@ -184,10 +193,12 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject arrayJsonObject  = (JSONObject) jsonArray.get(i);
                     String date = (String) arrayJsonObject.get("data");
                     String tipo = (String) arrayJsonObject.get("tipo");
-                    date = date.substring(0, 10);
+
+                    date = date.substring(0, 10) + " " + date.substring(11, 16);
 
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    date = date+" "+"16:00";
+
+                    //date = date+" "+time;
                     Date date1 = formatter.parse(date);
                     Date today = new Date();
 
@@ -197,12 +208,16 @@ public class MainActivity extends AppCompatActivity {
                         if(tipo.equals("dose")) {
                             JSONObject obj2 = (JSONObject) arrayJsonObject.get("descrizione");
                             String drug = (String) obj2.get("medicinale");
+                            if(drug.equals("Warfarin")) {
+                                date = date.substring(0, 11) + time;
+                            }
                             scheduleNotification(getNotification(drug, getResources().getString(R.string.take_medicine)), millis, i);
                             String dose = String.valueOf(obj2.get("dosaggio"));
                             arrayList.add(drug + " | " + dose + " mg | " + date);
                             adapter.notifyDataSetChanged();
                         }
                         else {
+                            date = date.substring(0, 11) + time;
                             arrayList.add(getResources().getString(R.string.test)+" | " + date);
                             scheduleNotification(getNotification(getResources().getString(R.string.test), getResources().getString(R.string.take_test)), millis, i);
                             adapter.notifyDataSetChanged();

@@ -87,7 +87,6 @@
         android:drawablePadding="10dp"
         android:fontFamily="@font/poppins"
         android:hint="@string/hour"
-        android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="datetime"
         android:paddingStart="15dp"

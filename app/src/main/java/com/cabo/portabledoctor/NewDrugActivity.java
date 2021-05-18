@@ -49,11 +49,14 @@ public class NewDrugActivity extends AppCompatActivity {
             String date2 = date.getText().toString();
             String hour2 = hour.getText().toString();
             String dose2 = dose.getText().toString();
+            String time = date2+"T"+hour2+":00.000Z";
+
+            System.out.println(time);
 
             if("".equals(date2) || "".equals(drug2) || "".equals(hour2) || "".equals(dose2))
                 error.setText(getResources().getString(R.string.all_fields));
             else {
-                String url = "http://portable-doctor.herokuapp.com/evento?token="+token+"&data="+date2+"&medicinale="+drug2+"&dosaggio="+dose2;
+                String url = "http://portable-doctor.herokuapp.com/evento?token="+token+"&data="+time+"&medicinale="+drug2+"&dosaggio="+dose2;
                 StringRequest postRequest = new StringRequest(Request.Method.POST, url, response -> {
                     if(response.equals("Data"))
                         error.setText(getResources().getString(R.string.date_error));

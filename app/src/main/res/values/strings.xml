@@ -40,4 +40,6 @@
     <string name="no_reminders" >No reminders</string>
     <string name="take_medicine">Take the medicine</string>
     <string name="take_test">Take INR test</string>
+    <string name="time">Time</string>
+    <string name="save">Save</string>
 </resources>

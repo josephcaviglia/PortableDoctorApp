@@ -39,4 +39,6 @@
     <string name="no_reminders">Nessun promemoria</string>
     <string name="take_medicine">Prendi la medicina</string>
     <string name="take_test">Fai il test INR</string>
+    <string name="time">Ora</string>
+    <string name="save">Salva</string>
 </resources>

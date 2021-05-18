@@ -47,6 +47,6 @@ public class MyEditTextDatePicker implements View.OnClickListener, DatePickerDia
 
         _editText.setText(new StringBuilder()
                 // Month is 0 based so add 1
-                .append(_birthYear).append("/").append(_month + 1).append("/").append(_day).append(" "));
+                .append(_birthYear).append("-").append(String.format("%02d",_month + 1)).append("-").append(String.format("%02d",_day)));
     }
 }
