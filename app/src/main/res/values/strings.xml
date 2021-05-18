@@ -37,4 +37,7 @@
     <string name="out_of_bounds" >Out of bounds</string>
     <string name="date_error">Date error</string>
     <string name="pathologies">Are you taking Warfarin?</string>
+    <string name="no_reminders" >No reminders</string>
+    <string name="take_medicine">Take the medicine</string>
+    <string name="take_test">Take INR test</string>
 </resources>

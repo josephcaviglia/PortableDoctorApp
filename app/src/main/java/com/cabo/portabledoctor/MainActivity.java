@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -123,8 +124,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         });
-
-
     }
 
     @Override
@@ -140,12 +139,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void setVisibility(boolean clicked) {
         if (!clicked) {
-            if(patient)
+            if(patient) {
+                test.setEnabled(true);
                 test.setVisibility(View.VISIBLE);
+            }
             else
                 test.setVisibility(View.INVISIBLE);
+            med.setEnabled(true);
             med.setVisibility(View.VISIBLE);
+
         } else {
+            test.setEnabled(false);
+            med.setEnabled(false);
             test.setVisibility(View.INVISIBLE);
             med.setVisibility(View.INVISIBLE);
         }
@@ -166,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refresh(String token) {
-
         JSONParser parser = new JSONParser();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url2 = "http://portable-doctor.herokuapp.com/evento/personale?token=" + token;
@@ -175,32 +179,42 @@ public class MainActivity extends AppCompatActivity {
                 arrayList.clear();
                 Object obj =  parser.parse(response);
                 JSONArray jsonArray = (JSONArray) obj;
+
                 for(int i=0; i< jsonArray.size(); i++) {
                     JSONObject arrayJsonObject  = (JSONObject) jsonArray.get(i);
                     String date = (String) arrayJsonObject.get("data");
                     String tipo = (String) arrayJsonObject.get("tipo");
-                    date = date.substring(0,10);
+                    date = date.substring(0, 10);
+
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     date = date+" "+"16:00";
+                    Date date1 = formatter.parse(date);
+                    Date today = new Date();
 
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-dd-MM HH:mm");
-                    Date d = formatter.parse(date);
-                    long mills = d.getTime() - System.currentTimeMillis();
+                    long millis = SystemClock.elapsedRealtime()+date1.getTime()-today.getTime();
 
-                    if(tipo.equals("dose")) {
-                        JSONObject a = (JSONObject) arrayJsonObject.get("descrizione");
-                        String drug = (String) a.get("medicinale");
-                        scheduleNotification(getNotification(drug), mills);
-                        String dose = String.valueOf(a.get("dosaggio"));
-                        arrayList.add(drug+" | "+dose+" mg | "+date);
-                        adapter.notifyDataSetChanged();
+                    if(date1.compareTo(today) > 0) {
+                        if(tipo.equals("dose")) {
+                            JSONObject obj2 = (JSONObject) arrayJsonObject.get("descrizione");
+                            String drug = (String) obj2.get("medicinale");
+                            scheduleNotification(getNotification(drug, getResources().getString(R.string.take_medicine)), millis, i);
+                            String dose = String.valueOf(obj2.get("dosaggio"));
+                            arrayList.add(drug + " | " + dose + " mg | " + date);
+                            adapter.notifyDataSetChanged();
+                        }
+                        else {
+                            arrayList.add(getResources().getString(R.string.test)+" | " + date);
+                            scheduleNotification(getNotification(getResources().getString(R.string.test), getResources().getString(R.string.take_test)), millis, i);
+                            adapter.notifyDataSetChanged();
+                        }
                     }
-                    else {
-                        arrayList.add("Test INR | "+date);
-                        scheduleNotification(getNotification("Test INR"), mills);
-                        adapter.notifyDataSetChanged();
-                    }
-
                 }
+
+                if(jsonArray.size() == 0 || arrayList.size() == 0) {
+                    arrayList.add(getResources().getString(R.string.no_reminders));
+                    adapter.notifyDataSetChanged();
+                }
+
             } catch (ParseException | java.text.ParseException e) {
                 e.printStackTrace();
             }
@@ -209,22 +223,23 @@ public class MainActivity extends AppCompatActivity {
         queue.add(stringRequest2);
     }
 
-    private void scheduleNotification (Notification notification , long delay) {
-        Intent notificationIntent = new Intent( this, MyNotificationPublisher. class ) ;
-        notificationIntent.putExtra(MyNotificationPublisher. NOTIFICATION_ID , 1 ) ;
-        notificationIntent.putExtra(MyNotificationPublisher. NOTIFICATION , notification) ;
-        PendingIntent pendingIntent = PendingIntent. getBroadcast ( this, 0 , notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT ) ;
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
+    private void scheduleNotification (Notification notification, long delay, int id) {
+        Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION_ID, id);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent. getBroadcast(this, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         assert alarmManager != null;
-        alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , delay , pendingIntent) ;
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, delay, pendingIntent);
     }
-    private Notification getNotification (String content) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder( this, default_notification_channel_id );
-        builder.setContentTitle("Portable Doctor");
-        builder.setContentText(content) ;
+
+    private Notification getNotification (String title, String content) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, default_notification_channel_id);
+        builder.setContentTitle(title);
+        builder.setContentText(content);
         builder.setSmallIcon(R.drawable.ic_medicine);
-        builder.setAutoCancel(true) ;
+        builder.setAutoCancel(true);
         builder.setChannelId(NOTIFICATION_CHANNEL_ID);
-        return builder.build() ;
+        return builder.build();
     }
 }

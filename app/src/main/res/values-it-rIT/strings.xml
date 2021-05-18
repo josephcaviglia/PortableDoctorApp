@@ -36,4 +36,7 @@
     <string name="out_of_bounds">Fuori intervallo</string>
     <string name="date_error">Errore data</string>
     <string name="pathologies">Sei in terapia Warfarin?</string>
+    <string name="no_reminders">Nessun promemoria</string>
+    <string name="take_medicine">Prendi la medicina</string>
+    <string name="take_test">Fai il test INR</string>
 </resources>
